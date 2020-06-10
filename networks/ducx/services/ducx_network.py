@@ -5,9 +5,9 @@ from networks.ducx.services.ducx_transaction_receipt import DucxTransactionRecei
 
 
 class DucxNetwork(WrapperNetwork):
-    def __init__(self, type):
+    def __init__(self, type: str):
         super().__init__(type)
-        self.parity = ParityInterface('ducx_testnet')
+        self.parity = ParityInterface(type)
 
     def get_last_block(self) -> int:
         return int(self.parity.eth_blockNumber(), 16)

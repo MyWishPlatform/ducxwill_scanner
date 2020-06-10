@@ -5,7 +5,7 @@ from blockchain_common.wrapper_transaction_receipt import WrapperTransactionRece
 
 
 class WrapperNetwork:
-    def __init__(self, type):
+    def __init__(self, type: str):
         self.type = type
 
     def get_last_block(self):

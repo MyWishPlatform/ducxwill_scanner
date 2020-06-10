@@ -7,6 +7,7 @@ from scanner.events.block_event import BlockEvent
 from scanner.services.last_block_persister import LastBlockPersister
 
 from eventscanner.monitors.payments.ducx_payment_monitor import DucxPaymentMonitor
+from eventscanner.queue.subscribers import pub
 
 
 class DucxScanner(ScannerPolling):
@@ -46,13 +47,7 @@ class DucxScanner(ScannerPolling):
         print()
         print(block_event.__dict__)
         print()
-        for key, value in block_event.transactions_by_address.items():
-            print(key)
-            print(value.__dict__)
-            print(value.outputs[0].__dict__)
-            print()
-        print()
-        print()
         print()
 
-        DucxPaymentMonitor().on_new_block_event(block_event)
+        # DucxPaymentMonitor.on_new_block_event(block_event)
+        pub.sendMessage('DUCATUSX_MAINNET', block_event)

@@ -1,10 +1,11 @@
 from scanner.events.block_event import BlockEvent
-from mywish_models.models import UserSiteBalance, session
+from mywish_models.models import UserSiteBalance, User, session
 from eventscanner.queue.pika_handler import send_in_queue
 
 
 class DucxPaymentMonitor:
-    def on_new_block_event(self, block_event: BlockEvent):
+    @classmethod
+    def on_new_block_event(cls, block_event: BlockEvent):
         addresses = block_event.transactions_by_address.keys()
         user_site_balances = session.query(UserSiteBalance).filter(UserSiteBalance.eth_address.in_(addresses)).all()
         for user_site_balance in user_site_balances:
@@ -21,13 +22,13 @@ class DucxPaymentMonitor:
                 tx_receipt = block_event.network.get_tx_receipt(transaction.tx_hash)
 
                 message = {
-                    'userId': user_site_balance.user.id,
+                    'userId': user_site_balance.user_id,
                     'transactionHash': transaction.tx_hash,
                     'currency': 'DUCX',
                     'amount': transaction.outputs[0].value,
-                    'siteId': user_site_balance.subsite.id,
+                    'siteId': user_site_balance.subsite_id,
                     'success': tx_receipt.success,
-                    'status': 'COMMITED'
+                    'status': 'COMMITTED'
                 }
 
                 send_in_queue('payment', 'notification-ducatusx-mainnet', message)
