@@ -1,6 +1,8 @@
 import pika
 import json
 
+from logger import logger
+
 
 def send_to_backend(type, queue, message):
     connection = pika.BlockingConnection(pika.ConnectionParameters(
@@ -19,6 +21,8 @@ def send_to_backend(type, queue, message):
         properties=pika.BasicProperties(type=type),
     )
     connection.close()
+
+    logger.info('message sent to backend: {}'.format(message))
 
 
 def send_to_monitor():

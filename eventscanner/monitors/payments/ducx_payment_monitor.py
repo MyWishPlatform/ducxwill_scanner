@@ -1,22 +1,34 @@
 from scanner.events.block_event import BlockEvent
-from mywish_models.models import UserSiteBalance, User, session
-from eventscanner.queue.pika_handler import send_in_queue
+from mywish_models.models import UserSiteBalance, session
+from eventscanner.queue.pika_handler import send_to_backend
+from logger import logger
+
+from settings.settings_local import NETWORKS
 
 
 class DucxPaymentMonitor:
+    network_types = ['DUCATUSX_MAINNET']
+    event_type = 'payment'
+
     @classmethod
     def on_new_block_event(cls, block_event: BlockEvent):
+
+        if block_event.network.type not in cls.network_types:
+            return
+
         addresses = block_event.transactions_by_address.keys()
         user_site_balances = session.query(UserSiteBalance).filter(UserSiteBalance.eth_address.in_(addresses)).all()
         for user_site_balance in user_site_balances:
             transactions = block_event.transactions_by_address[user_site_balance.eth_address.lower()]
 
             if not transactions:
-                print('fail')
+                logger.error('{}: User {} received from DB, but was not found in transaction list (block {}).'.format(
+                    block_event.network.type, user_site_balance, block_event.block.number))
 
             for transaction in transactions:
                 if user_site_balance.eth_address.lower() != transaction.outputs[0].address.lower():
-                    print('transaction from internal address. Skip')
+                    logger.debug(
+                        '{}: Found transaction out from internal address. Skip it.'.format(block_event.network.type))
                     continue
 
                 tx_receipt = block_event.network.get_tx_receipt(transaction.tx_hash)
@@ -31,4 +43,4 @@ class DucxPaymentMonitor:
                     'status': 'COMMITTED'
                 }
 
-                send_in_queue('payment', 'notification-ducatusx-mainnet', message)
+                send_to_backend(cls.event_type, 'notification-ducatusx-mainnet', message)

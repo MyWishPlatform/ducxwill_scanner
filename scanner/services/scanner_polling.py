@@ -3,6 +3,7 @@ import time
 from scanner.services.scanner import Scanner
 from blockchain_common.wrapper_network import WrapperNetwork
 from scanner.services.last_block_persister import LastBlockPersister
+from logger import logger
 
 
 class ScannerPolling(Scanner):
@@ -16,21 +17,35 @@ class ScannerPolling(Scanner):
         self.reach_interval = reach_interval
 
     def poller(self):
+        self.last_block_time = time.time()
         self.next_block_number = self.last_block_persister.get_last_block()
-        print('hello from')
+        logger.info('hello from {}'.format(self.network.type))
         while True:
             self.polling()
 
 
     def polling(self):
-        self.last_block_number = self.network.get_last_block()
+        try:
+            self.last_block_number = self.network.get_last_block()
 
-        if self.last_block_number - self.next_block_number > self.commitment_chain_length:
-            self.load_next_block()
-            time.sleep(self.reach_interval)
-            return
+            if self.last_block_number - self.next_block_number > self.commitment_chain_length:
+                logger.debug('Process next block {}/{} immediately.'.format(self.next_block_number, self.last_block_number))
+                self.load_next_block()
+                time.sleep(self.reach_interval)
+                return
 
-        print('no block')
+            time_interval = self.last_block_time - time.time()
+            if time_interval > self.WARN_INTERVAL:
+                logger.warn('{}: there is no block from {} seconds!'.format(self.network.type, time_interval))
+            elif time_interval > self.INFO_INTERVAL:
+                logger.info('{}: there is no block from {} seconds.'.format(self.network.type, time_interval))
+
+            # pending transactions logic
+
+            logger.debug('{}: all blocks processed, wait new one.'.format(self.network.type))
+        except Exception:
+            logger.exception('{}: exception handled in polling cycle. Continue.'.format(self.network.type))
+
         time.sleep(self.polling_interval)
 
 
@@ -39,6 +54,7 @@ class ScannerPolling(Scanner):
 
         self.last_block_persister.save_last_block(self.next_block_number)
         self.next_block_number += 1
+        self.last_block_time = time.time()
 
         self.process_block(block)
 

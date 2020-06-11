@@ -15,11 +15,9 @@ from settings.settings_local import *
 
 
 class DucxMaker:
-    def __init__(self):
-        network = DucxNetwork('DUCATUSX_TESTNET')
+    def __init__(self, network_name: str, polling_interval: int, commitment_chain_length: int):
+        network = DucxNetwork(network_name)
         last_block_persister = LastBlockPersister(network)
-        polling_interval = 10
-        commitment_chain_length = 5
         self.scanner = DucxScanner(network, last_block_persister, polling_interval, commitment_chain_length)
 
 
