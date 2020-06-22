@@ -7,7 +7,7 @@ from settings.settings_local import NETWORKS
 
 
 class DucxPaymentMonitor:
-    network_types = ['DUCATUSX_MAINNET']
+    network_types = ['DUCATUSX_MAINNET', 'BINANCE_TESTNET']
     event_type = 'payment'
 
     @classmethod
@@ -27,8 +27,8 @@ class DucxPaymentMonitor:
 
             for transaction in transactions:
                 if user_site_balance.eth_address.lower() != transaction.outputs[0].address.lower():
-                    logger.debug(
-                        '{}: Found transaction out from internal address. Skip it.'.format(block_event.network.type))
+                    print('{}: Found transaction out from internal address. Skip it.'.format(block_event.network.type),
+                          flush=True)
                     continue
 
                 tx_receipt = block_event.network.get_tx_receipt(transaction.tx_hash)

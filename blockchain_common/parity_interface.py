@@ -2,7 +2,6 @@ import requests
 import json
 
 from settings.settings_local import *
-from logger import logger
 
 
 class ParConnectExc(Exception):

@@ -17,10 +17,10 @@ class DucxScanner(ScannerPolling):
         super().__init__(network, last_block_persister, polling_interval, commitment_chain_length)
 
     def process_block(self, block: WrapperBlock):
-        logger.info('{}: new block received {} ({})'.format(self.network.type, block.number, block.hash))
+        print('{}: new block received {} ({})'.format(self.network.type, block.number, block.hash), flush=True)
 
         if not block.transactions:
-            logger.debug('{}: no transactions in {} ({})'.format(self.network.type, block.number, block.hash))
+            print('{}: no transactions in {} ({})'.format(self.network.type, block.number, block.hash), flush=True)
             return
 
         address_transactions = collections.defaultdict(list)
@@ -52,4 +52,4 @@ class DucxScanner(ScannerPolling):
 
         block_event = BlockEvent(self.network, block, address_transactions)
 
-        pub.sendMessage(self.network.type, block_event)
+        pub.sendMessage(self.network.type, block_event=block_event)
