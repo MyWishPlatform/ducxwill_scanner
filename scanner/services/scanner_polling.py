@@ -28,8 +28,8 @@ class ScannerPolling(Scanner):
             self.last_block_number = self.network.get_last_block()
 
             if self.last_block_number - self.next_block_number > self.commitment_chain_length:
-                print('Process next block {}/{} immediately.'.format(self.next_block_number, self.last_block_number),
-                      flush=True)
+                print('{}: Process next block {}/{} immediately.'.format(self.network.type, self.next_block_number,
+                                                                         self.last_block_number), flush=True)
                 self.load_next_block()
                 time.sleep(self.reach_interval)
                 return
