@@ -2,11 +2,13 @@ from scanner.events.block_event import BlockEvent
 from mywish_models.models import DUCXContract, Contract, Network, session
 from blockchain_common.wrapper_transaction import WrapperTransaction
 from eventscanner.queue.pika_handler import send_to_backend
+
 from logger import logger
+from settings.settings_local import NETWORKS
 
 
 class DeployMonitor:
-    network_types = ['DUCATUS_MAINNET', 'BINANCE_TESTNET']
+    network_types = ['DUCATUSX_MAINNET', 'DUCATUSX_TESTNET']
     event_type = 'deployed'
 
     @classmethod
@@ -33,11 +35,11 @@ class DeployMonitor:
             tx_receipt = block_event.network.get_tx_receipt(transaction.tx_hash)
 
             message = {
-                'contractId': '',
+                'contractId': contract[0].id,
                 'transactionHash': transaction.tx_hash,
                 'address': transaction.creates,
                 'success': tx_receipt.success,
                 'status': 'COMMITTED'
             }
 
-            send_to_backend(cls.event_type, 'notification-ducatusx-mainnet', message)
+            send_to_backend(cls.event_type, NETWORKS[block_event.network.type]['queue'], message)

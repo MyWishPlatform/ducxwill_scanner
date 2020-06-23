@@ -50,6 +50,7 @@ class DucxScanner(ScannerPolling):
                             '{}: Empty to and creates field for transaction {}. Skip it.'.format(self.network.type,
                                                                                                  transaction.tx_hash))
 
+        print('{}: transactions'.format(self.network.type), address_transactions, flush=True)
         block_event = BlockEvent(self.network, block, address_transactions)
 
         pub.sendMessage(self.network.type, block_event=block_event)
