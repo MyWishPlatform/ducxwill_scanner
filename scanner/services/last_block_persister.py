@@ -10,8 +10,11 @@ class LastBlockPersister:
         self.network_name: str = network.type
 
     def get_last_block(self) -> int:
-        with open(os.path.join(self.base_dir, self.network_name), 'r') as file:
-            last_block_number = file.read()
+        try:
+            with open(os.path.join(self.base_dir, self.network_name), 'r') as file:
+                last_block_number = file.read()
+        except FileNotFoundError:
+            return 1
         return int(last_block_number)
 
     def save_last_block(self, last_block_number: int):
