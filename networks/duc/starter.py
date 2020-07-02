@@ -1,7 +1,7 @@
 from scanner.services.last_block_persister import LastBlockPersister
 
-from .services.network import DucNetwork
-from .services.scanner import DucScanner
+from .services import DucNetwork
+from .services import DucScanner
 
 
 class DucMaker:

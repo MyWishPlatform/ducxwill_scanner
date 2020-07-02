@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from blockchain_common.wrapper_transaction import WrapperTransaction
-from .output import DucOutput
+from . import DucOutput
 
 
 class DucTransaction(WrapperTransaction):

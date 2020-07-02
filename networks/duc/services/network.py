@@ -3,7 +3,7 @@ from __future__ import annotations
 from blockchain_common.wrapper_network import WrapperNetwork
 from blockchain_common.litecoin_rpc import DucatuscoreInterface
 
-from .block import DucBlock
+from . import DucBlock
 
 
 class DucNetwork(WrapperNetwork):

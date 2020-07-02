@@ -4,7 +4,7 @@ from eventscanner.queue.subscribers import pub
 
 from scanner.events.block_event import BlockEvent
 from scanner.services.scanner_polling import ScannerPolling
-from .block import DucBlock
+from . import DucBlock
 
 
 class DucScanner(ScannerPolling):
