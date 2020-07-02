@@ -21,8 +21,8 @@ class DucScanner(ScannerPolling):
         address_transactions = defaultdict(list)
         for transaction in block.transactions:
             for output in transaction.outputs:
-                if output.address:
-                    address_transactions[output.address.lower()].append(transaction)
+                for a in output.address:
+                    address_transactions[a].append(transaction)
 
         print('{}: transactions'.format(self.network.type), address_transactions, flush=True)
         block_event = BlockEvent(self.network, block, address_transactions)

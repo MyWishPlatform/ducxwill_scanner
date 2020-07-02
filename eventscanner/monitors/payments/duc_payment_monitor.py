@@ -4,7 +4,7 @@ from scanner.events.block_event import BlockEvent
 
 
 class DucPaymentMonitor:
-    network_type = ['DUCATUS-MAINNET']
+    network_type = ['DUCATUS_MAINNET']
     event_type = 'payment'
 
     @classmethod
@@ -18,11 +18,11 @@ class DucPaymentMonitor:
             .filter(UserSiteBalance.duc_address.in_(addresses)) \
             .all()
         for usb in user_site_balances:
-            transactions = block_event.transactions_by_address[usb.duc_address.lower()]
+            transactions = block_event.transactions_by_address[usb.duc_address]
 
             for transaction in transactions:
                 for output in transaction.outputs:
-                    if usb.eth_address.lower() != output.address.lower():
+                    if usb.duc_address not in output.address:
                         print('{}: Found transaction out from internal address. Skip it.'
                               .format(block_event.network.type), flush=True)
                         continue
