@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from blockchain_common.wrapper_block import WrapperBlock
 from .transaction import DucTransaction
 
@@ -5,9 +7,9 @@ from .transaction import DucTransaction
 class DucBlock(WrapperBlock):
 
     @staticmethod
-    def build(block: dict):
+    def build(block: dict) -> DucBlock:
         hash = block['hash']
-        number = block['heigth']
+        number = block['height']
         timestamp = block['time']
-        transactions = [DucTransaction(t) for t in block['tx']]
+        transactions = [DucTransaction.build(t) for t in block['tx']]
         return DucBlock(hash, number, timestamp, transactions)

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from blockchain_common.wrapper_network import WrapperNetwork
 from blockchain_common.litecoin_rpc import DucatuscoreInterface
 
@@ -16,5 +18,5 @@ class DucNetwork(WrapperNetwork):
     def get_block(self, number: int) -> DucBlock:
         block_hash = self.interface.rpc.getblockhash(number)
         block = self.interface.rpc.getblock(block_hash)
-        block['tx'] = [self.interface.rpc.getrawtransaction(t) for t in block['tx']]
+        block['tx'] = [self.interface.rpc.getrawtransaction(t, 1) for t in block['tx']]
         return DucBlock.build(block)

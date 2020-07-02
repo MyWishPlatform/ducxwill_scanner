@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from blockchain_common.wrapper_transaction import WrapperTransaction
+from .output import DucOutput
 
 
 class DucTransaction(WrapperTransaction):
@@ -9,8 +10,8 @@ class DucTransaction(WrapperTransaction):
     def build(transaction: dict) -> DucTransaction:
         hash = transaction['txid']
         inputs = [i for i in transaction['vin']]
-        outputs = [o for o in transaction['vout']]
+        outputs = DucOutput.build(transaction)
         contract_creation = False
-        creates = "False"
+        creates = ""
 
         return DucTransaction(hash, inputs, outputs, contract_creation, creates)
