@@ -10,9 +10,9 @@ from networks.duc import DucMaker
 from settings.settings_local import NETWORKS
 
 networks = {
-    # 'DUCATUSX_MAINNET': DucxMaker,
-    # 'BINANCE_TESTNET': DucxMaker,
-    # 'DUCATUSX_TESTNET': DucxMaker,
+    'DUCATUSX_MAINNET': DucxMaker,
+    'BINANCE_TESTNET': DucxMaker,
+    'DUCATUSX_TESTNET': DucxMaker,
 
     'DUCATUS_MAINNET': DucMaker
 }
