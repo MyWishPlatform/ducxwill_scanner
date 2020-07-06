@@ -4,6 +4,7 @@ from blockchain_common.wrapper_network import WrapperNetwork
 
 
 class LastBlockPersister:
+    # TODO move into database
     base_dir = 'settings'
 
     def __init__(self, network: WrapperNetwork):
