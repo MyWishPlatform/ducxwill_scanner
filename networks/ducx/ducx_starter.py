@@ -7,9 +7,8 @@ sys.path.append(BASE_DIR)
 print(BASE_DIR)
 
 
-from networks.ducx.services.ducx_network import DucxNetwork
 from scanner.services.last_block_persister import LastBlockPersister
-from networks.ducx.services.ducx_scanner import DucxScanner
+from .services import DucxNetwork, DucxScanner
 
 from settings.settings_local import *
 

@@ -1,10 +1,10 @@
 import collections
 
 from scanner.services.scanner_polling import ScannerPolling
-from networks.ducx.services.ducx_network import DucxNetwork
 from blockchain_common.wrapper_block import WrapperBlock
 from scanner.events.block_event import BlockEvent
 from scanner.services.last_block_persister import LastBlockPersister
+from . import DucxNetwork
 
 from eventscanner.queue.subscribers import pub
 from logger import logger
