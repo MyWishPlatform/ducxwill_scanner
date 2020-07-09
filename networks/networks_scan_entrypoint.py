@@ -5,8 +5,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-from networks.ducx import DucxMaker
-from networks import DucMaker
+from networks import DucxMaker, DucMaker
 from settings.settings_local import NETWORKS
 
 networks = {
