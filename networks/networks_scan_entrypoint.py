@@ -5,8 +5,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-from networks.ducx.ducx_starter import DucxMaker
-from networks.duc import DucMaker
+from networks import DucxMaker, DucMaker
 from settings.settings_local import NETWORKS
 
 networks = {
@@ -14,7 +13,7 @@ networks = {
     'BINANCE_TESTNET': DucxMaker,
     'DUCATUSX_TESTNET': DucxMaker,
 
-    'DUCATUS_MAINNET': DucMaker
+    'DUCATUS_MAINNET': DucMaker,
 }
 
 

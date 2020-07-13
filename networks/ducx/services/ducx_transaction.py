@@ -1,5 +1,5 @@
 from blockchain_common.wrapper_transaction import WrapperTransaction
-from networks.ducx.services.ducx_output import DucxOutput
+from . import DucxOutput
 
 
 class DucxTransaction(WrapperTransaction):

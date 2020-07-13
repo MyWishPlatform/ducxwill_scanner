@@ -1,7 +1,7 @@
 from blockchain_common.wrapper_network import WrapperNetwork
 from blockchain_common.parity_interface import ParityInterface
-from networks.ducx.services.ducx_block import DucxBlock, DucxBlockMaker
-from networks.ducx.services.ducx_transaction_receipt import DucxTransactionReceipt, DucxTransactionReceiptMaker
+from . import DucxBlock, DucxBlockMaker
+from . import DucxTransactionReceipt, DucxTransactionReceiptMaker
 
 
 class DucxNetwork(WrapperNetwork):
